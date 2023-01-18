@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.stream.BaseStream;
 
 import static com.proj.togedutch.config.BaseResponseStatus.*;
 
@@ -32,7 +31,7 @@ public class UserDao {
     @Transactional(rollbackFor = Exception.class)
     public int createUser(User user) {
         String createUserQuery = "insert into User (Keyword_keyword_id, name, role, email, password, phone, location, status, FileProvider_file_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Object[] createUserParams = new Object[]{user.getKeywordIdx(), user.getName(), user.getRole(), user.getEmail(), user.getPassword(), user.getPhone(), user.getLocation(), user.getStatus(), user.getFileproviderIdx()};
+        Object[] createUserParams = new Object[]{user.getKeywordIdx(), user.getName(), user.getRole(), user.getEmail(), user.getPassword(), user.getPhone(), user.getLocation(), user.getStatus(), user.getImage()};
         int row = this.jdbcTemplate.update(createUserQuery, createUserParams);
         logger.debug(String.valueOf(row));
         String lastInsertIdQuery = "select last_insert_id()";
@@ -62,7 +61,7 @@ public class UserDao {
                         rs.getString("phone"),
                         rs.getString("location"),
                         rs.getString("status"),
-                        rs.getInt("FileProvider_file_id")),
+                        rs.getString("image")),
                         getUserParams
                 );
     }
@@ -97,7 +96,7 @@ public class UserDao {
                         rs.getTimestamp("created_at"),
                         rs.getTimestamp("updated_at"),
                         rs.getString("jwt"),
-                        rs.getInt("FileProvider_file_id"))
+                        rs.getString("image"))
                 );
     }
 
@@ -118,7 +117,7 @@ public class UserDao {
                         rs.getTimestamp("created_at"),
                         rs.getTimestamp("updated_at"),
                         rs.getString("jwt"),
-                        rs.getInt("FileProvider_file_id")),
+                        rs.getString("image")),
                 getPwdParams
                 );
     }
