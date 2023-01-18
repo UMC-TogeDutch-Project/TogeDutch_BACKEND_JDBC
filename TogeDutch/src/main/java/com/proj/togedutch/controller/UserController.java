@@ -50,6 +50,10 @@ public class UserController {
             return new BaseResponse<>(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
         }
         try {
+            String fileUrl = null;
+            if(file != null)
+                fileUrl = url + awsS3Service.uploadUserFile(file);
+            user.setImage(fileUrl);
             User newUser = userService.createUser(user);
             return new BaseResponse<>(newUser);
         } catch (BaseException e) {

@@ -54,6 +54,28 @@ public class AWSS3Service {
         // S3 이미지 서버에 등록한 파일명을 반환
         return fileName;
     }
+    public String uploadUserFile(MultipartFile file) throws IOException {
+        String fileName = createFileName(file.getOriginalFilename());
+
+        try{
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentLength(file.getSize());
+            objectMetadata.setContentType(file.getContentType());
+
+            InputStream inputStream = file.getInputStream();
+            amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch(AmazonServiceException e){
+            e.printStackTrace();
+        } catch(SdkClientException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
+        }
+
+        // S3 이미지 서버에 등록한 파일명을 반환
+        return fileName;
+    }
 
 
     public boolean deleteImage(String fileName) {
