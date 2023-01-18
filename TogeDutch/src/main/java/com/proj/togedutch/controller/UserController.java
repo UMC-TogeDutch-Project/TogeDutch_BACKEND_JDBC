@@ -120,8 +120,8 @@ public class UserController {
     public BaseResponse<String> deleteUser(@PathVariable("userIdx") int userIdx) {
         try {
             int delete = userService.deleteUser(userIdx);
-            if (delete == 0) {
-                return new BaseResponse<>("delete success" + userIdx);
+            if (delete == 1) {
+                return new BaseResponse<>("delete success");
             }
             return new BaseResponse<>("delete fail");
         } catch (BaseException e) {
