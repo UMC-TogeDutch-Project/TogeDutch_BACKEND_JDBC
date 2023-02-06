@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.proj.togedutch.config.BaseResponseStatus.COUNT_EXCEED;
 import static com.proj.togedutch.config.BaseResponseStatus.DATABASE_ERROR;
 
 @Service
@@ -30,13 +29,9 @@ public class MatchingService {
     public User getReMatching(int postIdx) throws BaseException {
         try{
             User getMatching = MatchingDao.getReMatching(postIdx);
-
-            if(getMatching == null)
-                throw new BaseException(COUNT_EXCEED);
-
             return getMatching;
         } catch(Exception e){
-            throw new BaseException(COUNT_EXCEED);
+            throw new BaseException(DATABASE_ERROR);
         }
     }
     public int getAcceptUserId(int userIdx,int postIdx) throws BaseException {

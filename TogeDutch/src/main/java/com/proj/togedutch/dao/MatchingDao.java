@@ -176,15 +176,6 @@ public class MatchingDao {
 
         logger.info(String.valueOf(user1.getLongitude()));
         System.out.println(user1);
-        
-
-        if(match == null){
-            String MatchingQuery = "Insert into Matching (user_first_id, count, Post_post_id) values (?,?,?) ";
-            Object[] getMatchingParams = new Object[]{user1.getUserIdx(),1,post.getPost_id()};
-            int a = this.jdbcTemplate.update(MatchingQuery, getMatchingParams);
-            System.out.println(a);
-
-        }
 
         if(match.getCount() == 0){
             //매칭 횟수 변경
