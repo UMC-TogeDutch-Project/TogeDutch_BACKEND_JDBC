@@ -2,7 +2,6 @@ package com.proj.togedutch.dao;
 
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.entity.Application;
-import com.proj.togedutch.entity.ApplicationStandby;
 import com.proj.togedutch.entity.ChatRoom;
 import com.proj.togedutch.entity.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,6 @@ public class ApplicationDao {
 
     @Autowired
     private PostDao postdao;
-
-    @Autowired
-    private UserDao user;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -93,28 +89,6 @@ public class ApplicationDao {
                         rs.getInt("ChatRoom_chatRoom_id")
                 ), userIdx);
     }
-
-    //신청 상태 전체 조회 (내가업로드-수락대기 상태)
-    public List<ApplicationStandby> getApplicationBuUploadStandby(int userIdx) throws BaseException {
-
-        String ApplicationStandbyQuery = "select * from Application where Post_User_user_id = ?  and status= ?";
-        return this.jdbcTemplate.query(ApplicationStandbyQuery,
-                (rs, rowNum) -> new ApplicationStandby(
-                        rs.getInt("application_id"),
-                        rs.getString("status"),
-                        rs.getInt("Post_post_id"),
-                        rs.getInt("User_user_id"),
-                        rs.getInt("ChatRoom_chatRoom_id"),
-                        rs.getString("Post_post_title"),
-                        rs.getString("User_name")
-                ), userIdx,"수락대기");
-    }
-
-
-
-
-
-
 
 
     //신청 상태 전체 조회 (내가 참여한 공고)
