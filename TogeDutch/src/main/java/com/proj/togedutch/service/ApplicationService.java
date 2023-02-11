@@ -3,10 +3,9 @@ package com.proj.togedutch.service;
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.dao.ApplicationDao;
 import com.proj.togedutch.dao.PostDao;
-import com.proj.togedutch.entity.Application;
-import com.proj.togedutch.entity.ChatRoom;
+import com.proj.togedutch.dao.UserDao;
+import com.proj.togedutch.entity.*;
 
-import com.proj.togedutch.entity.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,9 @@ public class ApplicationService {
     JwtService jwtService;
     @Autowired
     PostDao postdao;
+    @Autowired
+    UserDao userDao;
+
 
     //공고 신청
     public Application applyPost(int postIdx) throws BaseException {
@@ -107,7 +109,6 @@ public class ApplicationService {
     public List<Application> getApplicationByJoinUserId(int userIdx) throws BaseException {
         try{
             List<Application> joinApplication = applicationDao.getApplicationByJoinUserId(userIdx);
-            //System.out.print(UploadApplication);
             return joinApplication;
         } catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
@@ -122,6 +123,42 @@ public class ApplicationService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //신청 상태 전체 조회 (내가업로드-수락대기 상태)
+    public List<ApplicationStandby> getApplicationBuUploadStandby(int userIdx) throws BaseException {
+        try{
+
+            Application applicationGet= new Application();
+            int postIdx= applicationGet.getPost_id();
+            Post getPost=postdao.getPostById(postIdx);
+            String postTitle= getPost.getTitle(); //<-post 제목 가져옴
+
+
+
+
+            int userIdx1=applicationGet.getUser_id();
+            User getUser1= userDao.getUser(userIdx1);
+
+
+
+
+
+
+            List<ApplicationStandby> UploadApplicationStandby = applicationDao.getApplicationBuUploadStandby(userIdx);
+            return UploadApplicationStandby;
+        } catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
+
+
+
+
+
+
+
     //채팅방 전체 조회 (내가 참여)
     public List<ChatRoom> getChatRoomByJoinUserId(int userIdx) throws BaseException {
         try{
