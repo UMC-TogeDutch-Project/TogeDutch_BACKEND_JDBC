@@ -4,12 +4,10 @@ package com.proj.togedutch.controller;
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
 import com.proj.togedutch.config.BaseResponseStatus;
-import com.proj.togedutch.entity.Application;
-import com.proj.togedutch.entity.ChatRoom;
-import com.proj.togedutch.entity.Notice;
-import com.proj.togedutch.entity.Post;
+import com.proj.togedutch.entity.*;
 import com.proj.togedutch.service.ApplicationService;
 import com.proj.togedutch.service.PostService;
+import com.proj.togedutch.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +27,8 @@ public class ApplicationController {
     ApplicationService applicationService;
     @Autowired
     PostService postService;
+    @Autowired
+    UserService userService;
 
     // 공고 신청
     @ResponseBody
@@ -97,6 +97,30 @@ public class ApplicationController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+
+    //신청 상태 전체 조회 (내가업로드-수락대기 상태)
+    @ResponseBody
+    @GetMapping("/user/{userIdx}/ApplicationStandby/standby")
+    public BaseResponse<List<ApplicationStandby>> getApplicationBuUploadStandby(@PathVariable("userIdx") int userIdx) throws BaseException {
+        try {
+            List<ApplicationStandby> getApplicationStandby = applicationService.getApplicationBuUploadStandby(userIdx);
+            return new BaseResponse<>(getApplicationStandby);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
