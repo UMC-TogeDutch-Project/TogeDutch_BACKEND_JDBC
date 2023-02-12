@@ -41,6 +41,7 @@ public class LikeUsersController {
             LikeUsers likePost = likeUsersService.createLikePost(userIdx, postIdx);
             return new BaseResponse<>(likePost);
         } catch (BaseException e) {
+            e.printStackTrace();
             return new BaseResponse<>(e.getStatus());
         }
     }

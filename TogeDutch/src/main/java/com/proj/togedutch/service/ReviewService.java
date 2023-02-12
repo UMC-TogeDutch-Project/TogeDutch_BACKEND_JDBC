@@ -5,6 +5,7 @@ import com.proj.togedutch.dao.ReviewDao;
 import com.proj.togedutch.dao.UserDao;
 import com.proj.togedutch.entity.Keyword;
 import com.proj.togedutch.entity.Review;
+import com.proj.togedutch.entity.ReviewEmotion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,14 @@ public class ReviewService {
     public List<Review> getTextReview(int postId) throws BaseException{
         try {
             return reviewDao.getTextReview(postId);
+        } catch (Exception e) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public ReviewEmotion getEmotionReview(int postId) throws BaseException{
+        try {
+            return reviewDao.getEmotionReview(postId);
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }

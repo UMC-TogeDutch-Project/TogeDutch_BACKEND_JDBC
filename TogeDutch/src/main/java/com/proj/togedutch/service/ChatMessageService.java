@@ -8,6 +8,7 @@ import com.proj.togedutch.entity.ChatPhoto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class ChatMessageService {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Autowired
-    public ChatMessageService(ChatMessageDao chatMessageDao, SimpMessagingTemplate simpMessagingTemplate){
+    public ChatMessageService(ChatMessageDao chatMessageDao, SimpMessagingTemplate simpMessagingTemplate, JdbcTemplate jdbcTemplate){
         this.chatMessageDao = chatMessageDao;
         this.simpMessagingTemplate = simpMessagingTemplate;
     }

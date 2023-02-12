@@ -167,13 +167,14 @@ public class MatchingDao {
 
         );
 
+
         logger.info(String.valueOf(user1.getUserIdx()));
-        System.out.println(user1.getUserIdx());
+        //System.out.println(x);
 
         return user1;
     }
     @Transactional(rollbackFor = Exception.class)
-    public User getNoMatching(Double latitude, Double longitude, int postIdx) {
+    public User getNoMatching(Double latitude, Double longitude, int postIdx, Post post) {
 
         String getdistanceQuery = "SELECT *, (6371*acos(cos(radians(?))*cos(radians(latitude))*cos(radians(longitude)-radians(?))+sin(radians(?))*sin(radians(latitude)))) AS distance "
                 + "FROM User "
@@ -206,6 +207,7 @@ public class MatchingDao {
         Object[] getMatchingParams = new Object[]{user.getUserIdx(), 1, postIdx};
         int a = this.jdbcTemplate.update(MatchingQuery, getMatchingParams);
         System.out.println(a);
+
         return user;
 
     }
@@ -309,5 +311,35 @@ public class MatchingDao {
 
     }
 
+    public int getWaitApplicationId(int userIdx, int postIdx){
+
+        String getSelectAcceptQuery = "Select * from Post where post_id = ?";
+        Post post =this.jdbcTemplate.queryForObject(getSelectAcceptQuery,
+                (rs, rowNum) -> new Post(
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("url"),
+                        rs.getInt("delivery_tips"),
+                        rs.getInt("minimum"),
+                        rs.getString("order_time"),
+                        rs.getInt("num_of_recruits"),
+                        rs.getInt("recruited_num"),
+                        rs.getString("status"),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at"),
+                        rs.getInt("User_user_id"),
+                        rs.getString("image"),
+                        rs.getDouble("latitude"),
+                        rs.getDouble("longitude"),
+                        rs.getInt("ChatRoom_chatRoom_id"),
+                        rs.getString("category")
+
+                ), postIdx);
+
+        String MatchingApplicationQuery = "Insert into Application (status, Post_post_id, Post_User_user_id, ChatRoom_chatRoom_id,User_user_id) values (?,?,?,?,?) ";
+        Object[] getMatchingApplicationParams = new Object[]{"매칭 대기",post.getPost_id(),post.getUser_id(),post.getChatRoom_id(),userIdx};
+        int x =this.jdbcTemplate.update(MatchingApplicationQuery, getMatchingApplicationParams);
+        return x;
+    }
 
 }

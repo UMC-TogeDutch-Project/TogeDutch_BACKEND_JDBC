@@ -4,10 +4,7 @@ package com.proj.togedutch.controller;
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
 import com.proj.togedutch.config.BaseResponseStatus;
-import com.proj.togedutch.entity.Application;
-import com.proj.togedutch.entity.ChatRoom;
-import com.proj.togedutch.entity.Notice;
-import com.proj.togedutch.entity.Post;
+import com.proj.togedutch.entity.*;
 import com.proj.togedutch.service.ApplicationService;
 import com.proj.togedutch.service.PostService;
 import org.slf4j.Logger;
@@ -100,7 +97,7 @@ public class ApplicationController {
 
 
 
-    //채팅방 전체 조회 (내가 참여)
+    //채팅방 전체 조회 (내가 업로드 + 참여)
     @ResponseBody
     @GetMapping("/user/{userIdx}/chatroom")
     public BaseResponse<List<ChatRoom>> getChatRoomByJoinUserId(@PathVariable("userIdx") int userIdx) throws BaseException {
@@ -140,4 +137,13 @@ public class ApplicationController {
     }
 
 
+    @GetMapping("/application/waiting/{userIdx}")
+    public BaseResponse<List<ApplicationWaiting>> getApplicationWaitings(@PathVariable int userIdx) throws BaseException {
+        try{
+            List<ApplicationWaiting> getApplicationWaitings = applicationService.getApplicationWaitings(userIdx);
+            return new BaseResponse<>(getApplicationWaitings);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }

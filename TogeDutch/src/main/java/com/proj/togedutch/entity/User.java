@@ -63,4 +63,9 @@ public class User {
     public User(String Status) {
         this.status = Status;
     }
+
+    public User(int userIdx, String name){
+        this.userIdx = userIdx;
+        this.name = name;
+    }
 }

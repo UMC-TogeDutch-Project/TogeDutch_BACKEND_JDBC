@@ -2,6 +2,7 @@ package com.proj.togedutch.dao;
 
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.entity.Application;
+import com.proj.togedutch.entity.ApplicationWaiting;
 import com.proj.togedutch.entity.ChatRoom;
 import com.proj.togedutch.entity.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,15 +108,16 @@ public class ApplicationDao {
     }
 
 
-    //채팅방 전체 조회 (내가 참여)
+    //채팅방 전체 조회 (내가 업로드 + 참여)
     public List<ChatRoom> getChatRoomByJoinUserId(int userIdx) throws BaseException {
-        String getChatRoomQuery = "select * From ChatRoom where chatRoom_id In( select ChatRoom_chatRoom_id from Application where User_user_id = ? and status = ?)";
+        String getChatRoomQuery = "select * From ChatRoom where chatRoom_id In ( select ChatRoom_chatRoom_id from Application where (User_user_id = ? or Post_User_user_id = ?) and status = ?)";
+        Object[] getChatRoomParams = new Object[]{userIdx, userIdx, "수락완료"};
 
         return this.jdbcTemplate.query(getChatRoomQuery,
                 (rs, rowNum) -> new ChatRoom(
                         rs.getInt("chatRoom_id"),
                         rs.getTimestamp("created_at")
-                ), userIdx, "수락완료");
+                ), getChatRoomParams);
     }
 
     //공고 상태 변경
@@ -160,5 +162,26 @@ public class ApplicationDao {
         } catch(EmptyResultDataAccessException e){
             return null;
         }
+    }
+
+    public List<ApplicationWaiting> getApplicationWaitings(int userIdx) throws BaseException {
+        String getApplicationQuery = "SELECT a.application_id, a.status, a.Post_post_id, (select name from User where user_id = a.Post_User_user_id) as uploader, a.User_user_id, a.ChatRoom_chatRoom_id, p.title,  u.name as applicant\n" +
+                "FROM Application a LEFT JOIN Post p ON a.Post_post_id = p.post_id JOIN User u ON a.User_user_id = u.user_id\n" +
+                "where (a.Post_User_user_id = ? and a.status = \"수락대기\") or (a.User_user_id = ? and a.status = \"매칭 대기\")";
+        Object[] getApplicationParams = new Object[]{ userIdx, userIdx };
+
+        return this.jdbcTemplate.query(getApplicationQuery,
+                (rs, rowNum) -> new ApplicationWaiting(
+                        rs.getInt("application_id"),
+                        rs.getString("status"),
+                        rs.getInt("Post_post_id"),
+                        rs.getString("uploader"),
+                        rs.getInt("User_user_id"),
+                        rs.getInt("ChatRoom_chatRoom_id"),
+                        rs.getString("title"),
+                        rs.getString("applicant")
+                ),
+                getApplicationParams
+        );
     }
 }

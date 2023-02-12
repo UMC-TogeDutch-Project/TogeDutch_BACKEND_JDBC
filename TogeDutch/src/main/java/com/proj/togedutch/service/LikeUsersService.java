@@ -9,6 +9,7 @@ import com.proj.togedutch.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,7 +60,9 @@ public class LikeUsersService {
         try{
             int result = likeUsersDao.duplicateLikePost(userIdx, postIdx, Uploader_userIdx);
             return result;
-        } catch (Exception e) {
+        } catch(EmptyResultDataAccessException e1){
+            return 0;
+        } catch (Exception e2) {
             throw new BaseException(DATABASE_ERROR);
         }
     }

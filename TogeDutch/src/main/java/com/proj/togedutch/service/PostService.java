@@ -179,7 +179,6 @@ public class PostService {
     }
 
     public List<User> getUsersInPost(int postIdx) throws BaseException {
-
         Post post = postDao.getPostById(postIdx);
         if(post.getStatus().equals("공고사용불가"))
             throw new BaseException(POST_NOT_ACCESSIBLE);
@@ -187,6 +186,16 @@ public class PostService {
         try {
             List<User> getUsersInPost = postDao.getUsersInPost(postIdx);
             return getUsersInPost;
+        } catch (BaseException e) {
+            e.printStackTrace();
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public Post getPostByChatRoomId(int chatRoomIdx) throws BaseException {
+        try{
+            Post post = postDao.getPostByChatRoomId(chatRoomIdx);
+            return post;
         } catch (BaseException e) {
             e.printStackTrace();
             throw new BaseException(DATABASE_ERROR);

@@ -52,18 +52,36 @@ public class MatchingController {
     }
     @ResponseBody
     @GetMapping("/accept/{userIdx}/{postIdx}")
-    public int getAcceptUserId(@PathVariable("userIdx") int userIdx, @PathVariable("postIdx") int postIdx ) throws BaseException {
-
+    public BaseResponse<Integer> getAcceptUserId(@PathVariable("userIdx") int userIdx, @PathVariable("postIdx") int postIdx ) throws BaseException {
+        try {
             int getMatching = matchingService.getAcceptUserId(userIdx,postIdx);
-            return getMatching;
+            return new BaseResponse<>(getMatching);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
 
     }
     @ResponseBody
     @GetMapping("/deny/{userIdx}/{postIdx}")
-    public int getDenyUserId(@PathVariable("userIdx") int userIdx, @PathVariable("postIdx") int postIdx) throws BaseException {
+    public BaseResponse<Integer> getDenyUserId(@PathVariable("userIdx") int userIdx, @PathVariable("postIdx") int postIdx) throws BaseException {
 
+        try {
             int getMatching = matchingService.getDenyUserId(userIdx,postIdx);
-            return getMatching;
+            return new BaseResponse<>(getMatching);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+
+    }
+    @ResponseBody
+    @GetMapping("/wait/{userIdx}/{postIdx}")
+    public BaseResponse<Integer> getWaitUserId(@PathVariable("userIdx") int userIdx, @PathVariable("postIdx") int postIdx) throws BaseException {
+        try {
+        int getMatching = matchingService.getWaitApplicationId(userIdx,postIdx);
+            return new BaseResponse<>(getMatching);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
 
     }
 }

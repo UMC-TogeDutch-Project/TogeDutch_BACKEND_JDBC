@@ -63,5 +63,14 @@ public class ReviewDao {
                         rs.getInt("Application_Post_User_user_id")),
                 postId);
     }
+    public ReviewEmotion getEmotionReview(int postId) {
+        String getTextReviewQuery = "select avg(emotion_status) from mydb.Review where Application_Post_post_id = ? ";
+        ReviewEmotion reviewEmotion = this.jdbcTemplate.queryForObject(getTextReviewQuery,
+                (rs, rowNum) -> new ReviewEmotion(
+                        postId,
+                        rs.getDouble("avg(emotion_status)")),
+                postId);
+        return reviewEmotion;
+    }
 
 }

@@ -2,6 +2,7 @@ package com.proj.togedutch.controller;
 
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
+import com.proj.togedutch.config.BaseResponseStatus;
 import com.proj.togedutch.entity.*;
 import com.proj.togedutch.service.AWSS3Service;
 import com.proj.togedutch.service.ChatService;
@@ -102,7 +103,7 @@ public class ChatController {
             ChatMeetTime chatMeetTime = chatService.createChatMeetTime(chatRoomId,user,time);
             return new BaseResponse<>(chatMeetTime);
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            return new BaseResponse<>(BaseResponseStatus.CHAT_MEETTIME_ERROR);
         }
     }
 
@@ -116,10 +117,6 @@ public class ChatController {
             return new BaseResponse<>(e.getStatus());
         }
     }
-
-//    // 만남시간 전체조회
-//    @GetMapping("/chatMeetTimes")
-//    public BaseResponse<ChatMeetTime> getChatMeetTime(@PathVariable("chatRoom_id") int chatRoomId)
 
     @PutMapping("/chatMeetTime/{chatMeetTime_id}")
     public BaseResponse<ChatMeetTime> putChatMeetTime(@PathVariable("chatRoom_id") int chatRoom_id,@PathVariable("chatMeetTime_id") int chatMeetTime_id,@RequestParam String time) throws BaseException{

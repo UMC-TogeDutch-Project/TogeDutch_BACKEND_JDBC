@@ -29,4 +29,8 @@ public class Post {
     private Double longitude;
     private int chatRoom_id;
     private String category;
+
+    public Post(String title){
+        this.title = title;
+    }
 }

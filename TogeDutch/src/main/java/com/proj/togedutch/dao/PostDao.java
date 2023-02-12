@@ -235,8 +235,8 @@ public class PostDao {
     }
 
     public List<Post> getPostByTitleUserId(String title) throws BaseException {
-        String getPostQuery = "select * from Post where title = ? and status != \"공고사용불가\" ";
-
+        String getPostQuery = "select * from Post where title like ? and status != \"공고사용불가\" ";
+        String titleKeyword= "%" + title + "%";
         return this.jdbcTemplate.query(getPostQuery,
                 (rs, rowNum) -> new Post(
                         rs.getInt("post_id"),
@@ -256,7 +256,7 @@ public class PostDao {
                         rs.getDouble("longitude"),
                         rs.getInt("ChatRoom_chatRoom_id"),
                         rs.getString("category")
-                ), title);
+                ), titleKeyword);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -308,28 +308,28 @@ public class PostDao {
                 "HAVING distance <= 1\n" +
                 "ORDER BY distance;";
 
-        Object[] getPostParams = new Object[]{ postReq.getLatitude(), postReq.getLongitude(), postReq.getLatitude(), postReq.getCategory1(), postReq.getCategory2(), postReq.getCategory3(), postReq.getCategory4(), postReq.getCategory5(), postReq.getCategory6(), "모집중" };
+        Object[] getPostParams = new Object[]{postReq.getLatitude(), postReq.getLongitude(), postReq.getLatitude(), postReq.getCategory1(), postReq.getCategory2(), postReq.getCategory3(), postReq.getCategory4(), postReq.getCategory5(), postReq.getCategory6(), "모집중"};
 
         return this.jdbcTemplate.query(getPostQuery,
-                    (rs, rowNum) -> new Post(
-                            rs.getInt("post_id"),
-                            rs.getString("title"),
-                            rs.getString("url"),
-                            rs.getInt("delivery_tips"),
-                            rs.getInt("minimum"),
-                            rs.getString("order_time"),
-                            rs.getInt("num_of_recruits"),
-                            rs.getInt("recruited_num"),
-                            rs.getString("status"),
-                            rs.getTimestamp("created_at"),
-                            rs.getTimestamp("updated_at"),
-                            rs.getInt("User_user_id"),
-                            rs.getString("image"),
-                            rs.getDouble("latitude"),
-                            rs.getDouble("longitude"),
-                            rs.getInt("ChatRoom_chatRoom_id"),
-                            rs.getString("category")
-                    ), getPostParams);
+                (rs, rowNum) -> new Post(
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("url"),
+                        rs.getInt("delivery_tips"),
+                        rs.getInt("minimum"),
+                        rs.getString("order_time"),
+                        rs.getInt("num_of_recruits"),
+                        rs.getInt("recruited_num"),
+                        rs.getString("status"),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at"),
+                        rs.getInt("User_user_id"),
+                        rs.getString("image"),
+                        rs.getDouble("latitude"),
+                        rs.getDouble("longitude"),
+                        rs.getInt("ChatRoom_chatRoom_id"),
+                        rs.getString("category")
+                ), getPostParams);
     }
 
     public List<User> getUsersInPost(int postIdx) throws BaseException {
@@ -350,6 +350,31 @@ public class PostDao {
                         rs.getTimestamp("updated_at"),
                         rs.getDouble("latitude"),
                         rs.getDouble("longitude"))
-        , postIdx);
+                , postIdx);
+    }
+
+    public Post getPostByChatRoomId(int chatRoomIdx) throws BaseException {
+        String getPostQuery = "select * from Post where ChatRoom_chatRoom_id = ?";
+
+        return this.jdbcTemplate.queryForObject(getPostQuery,
+                (rs, rowNum) -> new Post(
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("url"),
+                        rs.getInt("delivery_tips"),
+                        rs.getInt("minimum"),
+                        rs.getString("order_time"),
+                        rs.getInt("num_of_recruits"),
+                        rs.getInt("recruited_num"),
+                        rs.getString("status"),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at"),
+                        rs.getInt("User_user_id"),
+                        rs.getString("image"),
+                        rs.getDouble("latitude"),
+                        rs.getDouble("longitude"),
+                        rs.getInt("ChatRoom_chatRoom_id"),
+                        rs.getString("category")
+                ), chatRoomIdx);
     }
 }

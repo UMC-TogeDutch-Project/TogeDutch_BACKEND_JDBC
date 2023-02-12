@@ -104,7 +104,7 @@ public class ChatMessageDao {
     }
 
     public List<ChatPhoto> getChatPhotos (int chatRoomId) {
-        String sql = "select * from ChatPhoto where chatPhoto_id = ?";
+        String sql = "select * from ChatPhoto where ChatRoom_chatRoom_id = ?";
         return this.jdbcTemplate.query(sql,(rs,row) -> new ChatPhoto(
                 rs.getInt("chatPhoto_id"),
                 rs.getTimestamp("created_at"),
@@ -117,7 +117,7 @@ public class ChatMessageDao {
 
     public int createChatPhoto(int chatRoomId,int userId,String file) {
         this.jdbcTemplate.update("set time_zone = 'Asia/Seoul'");
-        String ChatPhotoQuery = "insert into ChatPhoto (ChatRoom_chatRoom_id,User_user_id,image,created_at) Values (?,?,?)";
+        String ChatPhotoQuery = "insert into ChatPhoto (ChatRoom_chatRoom_id,User_user_id,image) Values (?,?,?)";
 
         Object[] createChatPhoto = new Object[]{chatRoomId,userId,file};
         this.jdbcTemplate.update(ChatPhotoQuery, createChatPhoto);
@@ -166,7 +166,7 @@ public class ChatMessageDao {
         String sql = "select * from ChatLocation where chatLocation_id = ? and ChatRoom_chatRoom_id = ?";
         return this.jdbcTemplate.queryForObject(sql,
                 (rs, rowNum) -> new ChatLocation(
-                        rs.getInt("chatLocationIdx"),
+                        rs.getInt("chatLocation_id"),
                         rs.getInt("ChatRoom_chatRoom_id"),
                         rs.getInt("User_user_id"),
                         rs.getBigDecimal("latitude"),

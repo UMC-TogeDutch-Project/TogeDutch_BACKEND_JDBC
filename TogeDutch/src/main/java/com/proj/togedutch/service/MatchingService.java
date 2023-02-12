@@ -59,7 +59,7 @@ public class MatchingService {
         } catch(EmptyResultDataAccessException e){
             MatchingCount=300;
             Post post = MatchingDao.getReMatchingFirst(postIdx);
-            user = MatchingDao.getNoMatching(post.getLatitude(),post.getLongitude(),post.getPost_id());
+            user = MatchingDao.getNoMatching(post.getLatitude(),post.getLongitude(),post.getPost_id(),post);
 
             return user;
             //throw new BaseException(DATABASE_ERROR);
@@ -79,6 +79,14 @@ public class MatchingService {
         try{
             int getDeny = MatchingDao.getDenyUserId(userIdx, postIdx);
             return getDeny;
+        } catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+    public int getWaitApplicationId(int userIdx, int postIdx) throws BaseException {
+        try{
+            int getWait = MatchingDao.getWaitApplicationId(userIdx,postIdx);
+            return getWait;
         } catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }

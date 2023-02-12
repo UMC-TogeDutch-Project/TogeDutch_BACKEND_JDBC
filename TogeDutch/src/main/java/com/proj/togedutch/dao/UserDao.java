@@ -139,8 +139,8 @@ public class UserDao {
     }
     @Transactional(rollbackFor = Exception.class)
     public Keyword modifyKeyword(Keyword keyword) throws BaseException {
-        String modifyKeywordQuery = "update Keyword set word1 = ?, word2 = ?, word3 = ?, word4 = ?, word5 = ? where keyword_id = ?";
-        Object[] modifyKeywordParams = new Object[]{keyword.getWord1(), keyword.getWord2(), keyword.getWord3(), keyword.getWord4(), keyword.getWord5(), keyword.getKeywordIdx()};
+        String modifyKeywordQuery = "update Keyword set word1 = ?, word2 = ?, word3 = ?, word4 = ?, word5 = ?, word6 = ? where keyword_id = ?";
+        Object[] modifyKeywordParams = new Object[]{keyword.getWord1(), keyword.getWord2(), keyword.getWord3(), keyword.getWord4(), keyword.getWord5(), keyword.getWord6(), keyword.getKeywordIdx()};
         if (this.jdbcTemplate.update(modifyKeywordQuery, modifyKeywordParams) == 1)
             return getKeyword(keyword.getKeywordIdx());
         else
