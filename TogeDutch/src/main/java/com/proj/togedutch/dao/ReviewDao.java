@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 @Repository
 public class ReviewDao {
@@ -62,15 +63,32 @@ public class ReviewDao {
                         rs.getInt("Application_Post_post_id"),
                         rs.getInt("Application_Post_User_user_id")),
                 postId);
+
+    }
+    public List<Post> getUploadPostReview(int userId) {
+
+        String getTextReviewQuery = "select post_id from Post where User_user_id = ? ";
+        return this.jdbcTemplate.query(getTextReviewQuery,
+                (rs, rowNum) -> new Post(
+                        rs.getInt("post_id")),
+                userId);
+
+
     }
     public ReviewEmotion getEmotionReview(int postId) {
-        String getTextReviewQuery = "select avg(emotion_status) from mydb.Review where Application_Post_post_id = ? ";
-        ReviewEmotion reviewEmotion = this.jdbcTemplate.queryForObject(getTextReviewQuery,
-                (rs, rowNum) -> new ReviewEmotion(
-                        postId,
-                        rs.getDouble("avg(emotion_status)")),
-                postId);
-        return reviewEmotion;
+        System.out.println(postId);
+        String getTextReviewQuery = "select avg(emotion_status) from Review where Application_Post_post_id = ? ";
+        ReviewEmotion emotion= this.jdbcTemplate.queryForObject(getTextReviewQuery,
+                    (rs, rowNum) -> new ReviewEmotion(
+                            postId,
+                            rs.getInt("avg(emotion_status)")),
+                    postId
+            );
+        //System.out.println(emotion.get(0).getPost_id());
+        System.out.println(emotion.getPost_id());
+        System.out.println(emotion.getAvg());
+
+        return emotion;
     }
 
 }

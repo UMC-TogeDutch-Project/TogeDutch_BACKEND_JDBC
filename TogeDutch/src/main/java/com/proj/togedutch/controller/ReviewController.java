@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -58,11 +59,43 @@ public class ReviewController {
     }
 
     @ResponseBody
+    @GetMapping("/upload/{userId}")
+    public BaseResponse<List<Post>> getUploadPostReview(@PathVariable("userId") int userId) {
+        try {
+            List<Post> getUpload = reviewService.getUploadPostReview(userId);
+
+            return new BaseResponse<>(getUpload);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    @ResponseBody
     @GetMapping("/emotion/{postId}")
     public BaseResponse<ReviewEmotion> getEmotionReview(@PathVariable("postId") int postId) {
         try {
+
             ReviewEmotion getEmotion = reviewService.getEmotionReview(postId);
             return new BaseResponse<>(getEmotion);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+    @ResponseBody
+    @GetMapping("/uploaduser/{userId}")
+    public BaseResponse<List<ReviewEmotion>> getUploadUserPostReview(@PathVariable("userId") int userId) {
+        ReviewEmotion getEmotion;
+        List<ReviewEmotion> userpost = new ArrayList<ReviewEmotion>();
+        try {
+            List<Post> post = reviewService.getUploadPostReview(userId);
+            for(int i=0; i<post.size(); i++){
+                System.out.println(post.get(i).getPost_id());
+                getEmotion = reviewService.getEmotionReview(post.get(i).getPost_id());
+                System.out.println(getEmotion.getAvg());
+                System.out.println(getEmotion.getPost_id());
+                userpost.add(getEmotion);
+            }
+            return new BaseResponse<>(userpost);
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }

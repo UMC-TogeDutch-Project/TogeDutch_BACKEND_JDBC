@@ -33,4 +33,7 @@ public class Post {
     public Post(String title){
         this.title = title;
     }
+    public Post(int post_id){
+        this.post_id = post_id;
+    }
 }

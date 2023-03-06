@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/chat")
+@MessageMapping("/chat")
 public class ChatWebSockController {
     private final ChatMessageService chatMessageService;
 

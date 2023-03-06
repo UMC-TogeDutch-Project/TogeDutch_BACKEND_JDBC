@@ -73,9 +73,10 @@ public enum BaseResponseStatus {
     KAKAO_PAY_FAIL(false, 2041, "카카오 결제에 실패했습니다."),
 
     POST_EMPTY_KEYWORD(false,2042, "키워드 값을 입력하세요"),
+    POST_EMPTY_USER(false,2043,"해당 유저의 공고가 존재하지 않습니다"),
+
     // Chat
     CHAT_MEETTIME_ERROR(false,2043,"<만남시간>의 형식이 잘못되었습니다."),
-
 
 
     /**

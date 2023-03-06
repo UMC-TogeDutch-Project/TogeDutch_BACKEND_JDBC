@@ -48,6 +48,7 @@ public class ApplicationDao {
         else
             throw new BaseException(DATABASE_ERROR);
     }
+    
     //신청 거절
     @Transactional(rollbackFor=Exception.class)
     public Application modifyStatus_deny(int applicationIdx) throws BaseException {
@@ -80,7 +81,7 @@ public class ApplicationDao {
     //신청 상태 전체 조회 (내가 업로드)
     public List<Application> getApplicationByUploadUserId(int userIdx) throws BaseException {
 
-        String getApplicationQuery = "select * from Application where Post_User_user_id = ? ";
+        String getApplicationQuery = "select * from Application where Post_User_user_id = ? order by application_id desc";
         return this.jdbcTemplate.query(getApplicationQuery,
                 (rs, rowNum) -> new Application(
                         rs.getInt("application_id"),
@@ -94,7 +95,7 @@ public class ApplicationDao {
 
     //신청 상태 전체 조회 (내가 참여한 공고)
     public List<Application> getApplicationByJoinUserId(int userIdx) throws BaseException {
-        String getApplicationQuery = "select * from Application where User_user_id = ? ";
+        String getApplicationQuery = "select * from Application where User_user_id = ? order by application_id desc";
 
 
         return this.jdbcTemplate.query(getApplicationQuery,
@@ -110,7 +111,7 @@ public class ApplicationDao {
 
     //채팅방 전체 조회 (내가 업로드 + 참여)
     public List<ChatRoom> getChatRoomByJoinUserId(int userIdx) throws BaseException {
-        String getChatRoomQuery = "select * From ChatRoom where chatRoom_id In ( select ChatRoom_chatRoom_id from Application where (User_user_id = ? or Post_User_user_id = ?) and status = ?)";
+        String getChatRoomQuery = "select * From ChatRoom where chatRoom_id In ( select ChatRoom_chatRoom_id from Application where (User_user_id = ? or Post_User_user_id = ?) and status = ? )";
         Object[] getChatRoomParams = new Object[]{userIdx, userIdx, "수락완료"};
 
         return this.jdbcTemplate.query(getChatRoomQuery,
@@ -167,7 +168,8 @@ public class ApplicationDao {
     public List<ApplicationWaiting> getApplicationWaitings(int userIdx) throws BaseException {
         String getApplicationQuery = "SELECT a.application_id, a.status, a.Post_post_id, (select name from User where user_id = a.Post_User_user_id) as uploader, a.User_user_id, a.ChatRoom_chatRoom_id, p.title,  u.name as applicant\n" +
                 "FROM Application a LEFT JOIN Post p ON a.Post_post_id = p.post_id JOIN User u ON a.User_user_id = u.user_id\n" +
-                "where (a.Post_User_user_id = ? and a.status = \"수락대기\") or (a.User_user_id = ? and a.status = \"매칭 대기\")";
+                "where (a.Post_User_user_id = ? and a.status = \"수락대기\") or (a.User_user_id = ? and a.status = \"매칭 대기\")\n" +
+                "order by a.application_id desc";
         Object[] getApplicationParams = new Object[]{ userIdx, userIdx };
 
         return this.jdbcTemplate.query(getApplicationQuery,

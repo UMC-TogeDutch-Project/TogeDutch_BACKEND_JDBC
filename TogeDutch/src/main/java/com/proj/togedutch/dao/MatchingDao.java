@@ -146,7 +146,7 @@ public class MatchingDao {
                 + "HAVING distance <= 0.5 "
                 + "ORDER BY distance asc limit 1 ";
 
-        Object[] getDistance = new Object[]{post.getLongitude(), post.getLatitude(),post.getLongitude(), userIdx , userIdx2};
+        Object[] getDistance = new Object[]{post.getLatitude(),post.getLongitude(),post.getLatitude(), userIdx , userIdx2};
 
         User user1 = this.jdbcTemplate.queryForObject(getdistanceQuery,
                 (rs, rowNum) -> new User(
@@ -183,7 +183,7 @@ public class MatchingDao {
 
         System.out.println("다른거?" + latitude +longitude);
 
-        Object[] getDistance = new Object[]{longitude,latitude,longitude};
+        Object[] getDistance = new Object[]{latitude,longitude,latitude};
 
         User user = this.jdbcTemplate.queryForObject(getdistanceQuery,
                 (rs, rowNum) -> new User(
