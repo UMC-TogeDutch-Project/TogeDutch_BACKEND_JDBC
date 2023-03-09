@@ -9,6 +9,7 @@ import com.proj.togedutch.entity.ApplicationWaiting;
 import com.proj.togedutch.entity.ChatRoom;
 
 import com.proj.togedutch.entity.Post;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ApplicationService {
         int userIdx;
         Post getPost;
         Application checkDuplicated;
-
+        // userIdx와 post_id가 같으면 내가 올린 공고임
         try {
             getPost = postdao.getPostById(postIdx);
             userIdx = jwtService.getUserIdx();
@@ -54,7 +55,7 @@ public class ApplicationService {
             e.printStackTrace();
             throw new BaseException(DATABASE_ERROR);
         }
-
+        // 값이 없었으면 아직 신청을 안 한것이므로!!
         if (checkDuplicated != null)
             throw new BaseException(DUPLICATED_APPLICATION);
 
@@ -75,8 +76,23 @@ public class ApplicationService {
 
     //신청 수락
     public Application modifyStatus(int applicationIdx) throws BaseException {
+
         try {
+            Application checkDuplicated = applicationDao.getApplication(applicationIdx);
+            String status = checkDuplicated.getStatus();
+
+            if (status.equals("모집완료"))
+                throw new BaseException(COMPLETED_STATUS);
+
+            if (status.equals("수락완료"))
+                throw new BaseException(ACCEPT_STATUS);
+
+            if (status.equals("수락거절"))
+                throw new BaseException(REJECTD_STATUS);
+
             return applicationDao.modifyStatus(applicationIdx);
+        } catch (BaseException be) {
+            throw be;
         } catch (Exception e) {
             throw new BaseException(MODIFY_FAIL_USER);
         }
@@ -86,7 +102,21 @@ public class ApplicationService {
     //신청 거절
     public Application modifyStatus_deny(int applicationIdx) throws BaseException {
         try {
+            Application checkDuplicated = applicationDao.getApplication(applicationIdx);
+            String status = checkDuplicated.getStatus();
+
+            if (status.equals("모집완료"))
+                throw new BaseException(COMPLETED_STATUS);
+
+            if (status.equals("수락완료"))
+                throw new BaseException(ACCEPT_STATUS);
+
+            if (status.equals("수락거절"))
+                throw new BaseException(REJECTD_STATUS);
+
             return applicationDao.modifyStatus_deny(applicationIdx);
+        }catch (BaseException be) {
+            throw be;
         } catch (Exception e) {
             throw new BaseException(MODIFY_FAIL_USER);
         }
@@ -108,7 +138,6 @@ public class ApplicationService {
     public List<Application> getApplicationByJoinUserId(int userIdx) throws BaseException {
         try {
             List<Application> joinApplication = applicationDao.getApplicationByJoinUserId(userIdx);
-            //System.out.print(UploadApplication);
             return joinApplication;
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);

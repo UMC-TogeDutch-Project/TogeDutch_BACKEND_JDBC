@@ -100,6 +100,11 @@ public enum BaseResponseStatus {
     // [GET] /application
     NOBODY_WAITING(false, 3022, "수락대기 중인 메이트 신청자가 없습니다."),
 
+    //[POST] /application
+    COMPLETED_STATUS(false,3031,"이미 모집이 완료된 공고입니다."),
+    ACCEPT_STATUS(false,3032,"이미 수락된 공고입니다."),
+    REJECTD_STATUS(false,3033,"이미 수락거절된 공고입니다."),
+
 
 
     /**
@@ -112,6 +117,7 @@ public enum BaseResponseStatus {
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
     MODIFY_FAIL_USER(false,4014,"유저 수정 실패"),
+    //MODIFY_FAIL_STATUS(false,4021,"유저 상태 오류"),
     MODIFY_FAIL_KEYWORD(false,4015,"키워드 수정 실패"),
     DELETE_FAIL_USER(false,4020,"유저 삭제 실패"),
 
