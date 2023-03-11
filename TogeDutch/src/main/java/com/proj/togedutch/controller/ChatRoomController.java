@@ -55,8 +55,14 @@ public class ChatRoomController {
 
     // 채팅방 삭제
     @DeleteMapping("/{chatRoom_id}")
-    public int deleteChatRoom (@PathVariable("chatRoom_id") int chatRoomIdx) throws Exception{
-        return chatRoomService.deleteChatRoom(chatRoomIdx);
+    public BaseResponse<Integer> deleteChatRoom (@PathVariable("chatRoom_id") int chatRoomIdx) throws Exception{
+        try{
+            int deleteChatRoom = chatRoomService.deleteChatRoom(chatRoomIdx);
+            return new BaseResponse<>(deleteChatRoom);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+
     }
 
 }
