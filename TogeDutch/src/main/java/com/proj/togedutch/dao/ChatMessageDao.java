@@ -1,10 +1,7 @@
 package com.proj.togedutch.dao;
 
 import com.proj.togedutch.config.BaseException;
-import com.proj.togedutch.entity.ChatLocation;
-import com.proj.togedutch.entity.ChatMeetTime;
-import com.proj.togedutch.entity.ChatMessage;
-import com.proj.togedutch.entity.ChatPhoto;
+import com.proj.togedutch.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,4 +178,22 @@ public class ChatMessageDao {
         Object[] putChatLocationParams = new Object[]{latitude,longitude,chatLocationIdx,chatRoom_id};
         this.jdbcTemplate.update(updateCLQuery,putChatLocationParams);
     }
+
+//    public ChatRoomUser getChatRoomMember(int chatRoom_id) {
+//        String sql = "SELECT count(distinct User_user_id) FROM Chat where ChatRoom_chatRoom_id = ?";
+//        //Object[] getChatMemberParams = new Object[]{chatRoom_id};
+//        return this.jdbcTemplate.queryForObject(sql,(rs, rowNum) -> new ChatRoomUser(
+//                rs.getInt("count(distinct User_user_id)")
+//        ),chatRoom_id);
+//    }
+
+//    public ChatRoomUser getUserName(int chatRoom_id, int user_id) {
+//        String sql = "SELECT distinct User.name, (SELECT count(distinct User_user_id) FROM Chat  \n" +
+//                "where ChatRoom_chatRoom_id=?) as countMem \n" +
+//                "FROM Chat join User on Chat.User_user_id = User.user_id\n" +
+//                "where ChatRoom_chatRoom_id= ? and Chat.User_user_id=?;";
+//        return this.jdbcTemplate.queryForObject(sql,(rs, rowNum) -> new ChatRoomUser(
+//                rs.getString("name"),
+//                rs.getInt("countMem")),chatRoom_id,chatRoom_id,user_id);
+//    }
 }

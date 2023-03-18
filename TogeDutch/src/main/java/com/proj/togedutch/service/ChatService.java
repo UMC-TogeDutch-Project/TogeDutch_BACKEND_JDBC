@@ -2,10 +2,7 @@ package com.proj.togedutch.service;
 
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.dao.ChatMessageDao;
-import com.proj.togedutch.entity.ChatLocation;
-import com.proj.togedutch.entity.ChatMeetTime;
-import com.proj.togedutch.entity.ChatMessage;
-import com.proj.togedutch.entity.ChatPhoto;
+import com.proj.togedutch.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static com.proj.togedutch.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.proj.togedutch.config.BaseResponseStatus.RESPONSE_ERROR;
 
 @Service
 public class ChatService {
@@ -164,4 +162,24 @@ public class ChatService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+//    // 채팅방 인원 수
+//    public ChatRoomUser getChatRoomMember(int chatRoom_id) throws BaseException{
+//        try{
+//            ChatRoomUser chatRoomMember = chatMessageDao.getChatRoomMember(chatRoom_id);
+//            return chatRoomMember;
+//        } catch (Exception e){
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
+//
+//    // 현 채팅방에 있는 당사자 이름 가져오기
+//    public ChatRoomUser getUserName(int chatRoom_id, int user_id) throws BaseException{
+//        try{
+//            ChatRoomUser userName = chatMessageDao.getUserName(chatRoom_id,user_id);
+//            return userName;
+//        } catch (Exception e){
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 }

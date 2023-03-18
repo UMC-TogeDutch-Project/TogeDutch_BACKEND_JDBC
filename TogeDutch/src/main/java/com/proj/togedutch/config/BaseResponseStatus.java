@@ -76,7 +76,7 @@ public enum BaseResponseStatus {
     POST_EMPTY_USER(false,2043,"해당 유저의 공고가 존재하지 않습니다"),
 
     // Chat
-    CHAT_MEETTIME_ERROR(false,2043,"<만남시간>의 형식이 잘못되었습니다."),
+    CHAT_MEETTIME_ERROR(false,2044,"<만남시간>의 형식이 잘못되었습니다."),
 
 
     /**
@@ -121,6 +121,8 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_KEYWORD(false,4015,"키워드 수정 실패"),
     DELETE_FAIL_USER(false,4020,"유저 삭제 실패"),
 
+    DUPLICATE_KEY_ORROR (false,4021,"동일한 유저가 존재합니다."),
+    FOREIGN_KEY_ORROR (false,4021,"유저가 없거나, 채팅방이 존재하지 않습니다."),
 
 
     /**
