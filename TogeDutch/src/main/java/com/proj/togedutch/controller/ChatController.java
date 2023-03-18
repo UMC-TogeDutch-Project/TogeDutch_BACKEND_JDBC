@@ -161,4 +161,27 @@ public class ChatController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+//    // 채팅방 내 인원수
+//    @GetMapping("/member")
+//    public BaseResponse<ChatRoomUser> getChatRoomMember(@PathVariable("chatRoom_id") int chatRoom_id){
+//        try{
+//            ChatRoomUser chatMember = chatService.getChatRoomMember(chatRoom_id);
+//            return new BaseResponse<>(chatMember);
+//        } catch (BaseException e){
+//            return new BaseResponse<>(e.getStatus());
+//        }
+//    }
+//
+//    // 현 채팅방에 있는 당사자 이름 가져오기
+//    @GetMapping("/name/{user_id}")
+//    public BaseResponse<ChatRoomUser> getUserName(@PathVariable("chatRoom_id") int chatRoom_id, @PathVariable("user_id") int user_id){
+//        try{
+//            ChatRoomUser userName = chatService.getUserName(chatRoom_id,user_id);
+//            return new BaseResponse<>(userName);
+//        } catch (BaseException e){
+//            return new BaseResponse<>(e.getStatus());
+//        }
+//    }
+
 }
