@@ -110,4 +110,26 @@ public class ChatRoomController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    // 채팅방 나가기
+    @DeleteMapping("/{chatRoom_id}/user/{user_id}/leave")
+    public BaseResponse<Integer> leaveChatRoomUser (@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId) throws Exception{
+        try{
+            int chatRoomUser = chatRoomService.leaveChatRoomUser(chatRoomIdx,userId);
+            return new BaseResponse<>(chatRoomUser);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    // 채팅방에 존재하는 한명의 유저 정보
+    @GetMapping("/{chatRoom_id}/user/{user_id}")
+    public BaseResponse<ChatRoomUser> getChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId) throws Exception{
+        try {
+            ChatRoomUser chatRoomUser = chatRoomService.getChatRoomUser(chatRoomIdx,userId);
+            return new BaseResponse<>(chatRoomUser);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }

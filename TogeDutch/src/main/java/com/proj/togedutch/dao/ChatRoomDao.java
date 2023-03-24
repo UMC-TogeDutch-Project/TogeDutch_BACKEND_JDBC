@@ -57,15 +57,7 @@ public class ChatRoomDao {
         this.jdbcTemplate.update("set time_zone = 'Asia/Seoul'");
         String inviteUserQuery = "INSERT INTO ChatRoomOfUser (`chatRoom_id`, `user_id`) VALUES (?, ?);";
         this.jdbcTemplate.update(inviteUserQuery,chatRoomIdx,userId);
-        String lastInsertUserQuery = "SELECT * FROM ChatRoomOfUser where chatRoom_id = ? and user_id =?";
-        return this.jdbcTemplate.queryForObject(lastInsertUserQuery,
-                (rs, rowNum) -> new ChatRoomUser(
-                        rs.getInt("chatRoom_id"),
-                        rs.getInt("user_id"),
-                        rs.getByte("status"),
-                        rs.getInt("is_read"),
-                        rs.getTimestamp("updated_at")
-                ), chatRoomIdx,userId);
+        return getChatRoomUser(chatRoomIdx,userId);
     }
 
     public List<ChatRoomUser> getChatRoomUsers(int chatRoomIdx) {
@@ -108,5 +100,10 @@ public class ChatRoomDao {
         String updateChatRoomUsersQuery = "UPDATE `mydb`.`ChatRoomOfUser` SET `status` = 00, `updated_at` = CURRENT_TIMESTAMP " +
                 "WHERE (`chatRoom_id` = ?) and (`user_id` = ?);";
         this.jdbcTemplate.update(updateChatRoomUsersQuery,chatRoomIdx,userId);
+    }
+
+    public int leaveChatRoomUser(int chatRoomIdx, int userId) {
+        String deleteChatRoomUserQuery = "delete from mydb.ChatRoomOfUser where chatRoom_id=? and user_id=?";
+        return this.jdbcTemplate.update(deleteChatRoomUserQuery, chatRoomIdx,userId);
     }
 }
