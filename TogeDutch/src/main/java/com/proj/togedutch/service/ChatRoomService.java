@@ -117,4 +117,20 @@ public class ChatRoomService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public int leaveChatRoomUser(int chatRoomIdx, int userId) throws BaseException{
+        try {
+            return chatRoomDao.leaveChatRoomUser(chatRoomIdx,userId);
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+
+    public ChatRoomUser getChatRoomUser(int chatRoomIdx, int userId) throws BaseException {
+        try {
+            return chatRoomDao.getChatRoomUser(chatRoomIdx,userId);
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
 }
