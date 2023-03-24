@@ -89,7 +89,6 @@ public class ChatRoomController {
         }
     }
 
-    // /chatRoom/:chatRoom_id/user/:user_id/in
     // 현재 채팅방안에서 채팅을 보는중
     @PutMapping("/{chatRoom_id}/user/{user_id}/in")
     public BaseResponse<ChatRoomUser> inChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){

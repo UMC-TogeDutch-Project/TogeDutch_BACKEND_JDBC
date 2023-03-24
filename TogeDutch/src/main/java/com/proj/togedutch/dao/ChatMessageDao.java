@@ -66,6 +66,13 @@ public class ChatMessageDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
 
+    public void is_readCountUp(int chatRoom_id){
+        this.jdbcTemplate.update("set time_zone = 'Asia/Seoul'");
+        String is_readCountUpQuery = "update ChatRoomOfUser set is_read=is_read + 1 where status=0 and chatRoom_id=?";
+        this.jdbcTemplate.update(is_readCountUpQuery,chatRoom_id);
+    }
+
+
     public void saveMessage(ChatMessage message){
         this.jdbcTemplate.update("set time_zone = 'Asia/Seoul'");
         String roomIdName = Integer.toString(message.getChatRoomId());

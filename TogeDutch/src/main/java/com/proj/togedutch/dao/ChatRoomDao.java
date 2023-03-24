@@ -98,13 +98,15 @@ public class ChatRoomDao {
 
     public void inChatRoomUser(int chatRoomIdx, int userId) {
         this.jdbcTemplate.update("set time_zone = 'Asia/Seoul'");
-        String updateChatRoomUsersQuery = "UPDATE `mydb`.`ChatRoomOfUser` SET `status` = 1, `updated_at` = CURRENT_TIMESTAMP WHERE (`chatRoom_id` = ?) and (`user_id` = ?);";
+        String updateChatRoomUsersQuery = "UPDATE `mydb`.`ChatRoomOfUser` SET `status` = 1, `updated_at` = CURRENT_TIMESTAMP, `is_read` = 0 " +
+                "WHERE (`chatRoom_id` = ?) and (`user_id` = ?);";
         this.jdbcTemplate.update(updateChatRoomUsersQuery,chatRoomIdx,userId);
     }
 
     public void outChatRoomUser(int chatRoomIdx, int userId) {
         this.jdbcTemplate.update("set time_zone = 'Asia/Seoul'");
-        String updateChatRoomUsersQuery = "UPDATE `mydb`.`ChatRoomOfUser` SET `status` = 00, `updated_at` = CURRENT_TIMESTAMP WHERE (`chatRoom_id` = ?) and (`user_id` = ?);";
+        String updateChatRoomUsersQuery = "UPDATE `mydb`.`ChatRoomOfUser` SET `status` = 00, `updated_at` = CURRENT_TIMESTAMP " +
+                "WHERE (`chatRoom_id` = ?) and (`user_id` = ?);";
         this.jdbcTemplate.update(updateChatRoomUsersQuery,chatRoomIdx,userId);
     }
 }
