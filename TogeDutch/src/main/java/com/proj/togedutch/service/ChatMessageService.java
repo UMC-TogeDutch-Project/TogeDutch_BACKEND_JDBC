@@ -33,6 +33,7 @@ public class ChatMessageService {
         } else if (ChatMessage.MessageType.QUIT.equals(message.getContent())) {
             message.setContent(message.getWriter() + "님이 방에서 나갔습니다.");
         }
+        chatMessageDao.is_readCountUp(message.getChatRoomId());
         simpMessagingTemplate.convertAndSend("/sub/chat/room/" + roomIdName, message); //message 전송
     }
 

@@ -2,13 +2,16 @@ package com.proj.togedutch.controller;
 
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
+import com.proj.togedutch.entity.ChatLocation;
 import com.proj.togedutch.entity.ChatRoom;
+import com.proj.togedutch.entity.ChatRoomUser;
 import com.proj.togedutch.entity.Post;
 import com.proj.togedutch.service.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -55,8 +58,78 @@ public class ChatRoomController {
 
     // 채팅방 삭제
     @DeleteMapping("/{chatRoom_id}")
-    public int deleteChatRoom (@PathVariable("chatRoom_id") int chatRoomIdx) throws Exception{
-        return chatRoomService.deleteChatRoom(chatRoomIdx);
+    public BaseResponse<Integer> deleteChatRoom (@PathVariable("chatRoom_id") int chatRoomIdx) throws Exception{
+        try{
+            int deleteChatRoom = chatRoomService.deleteChatRoom(chatRoomIdx);
+            return new BaseResponse<>(deleteChatRoom);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
+    // 채팅방에 유저 추가
+    @PostMapping("/{chatRoom_id}/user/{user_id}")
+    public BaseResponse<ChatRoomUser> inviteUserController (@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId) throws Exception{
+        try{
+            ChatRoomUser chatRoomUser = chatRoomService.inviteUser(chatRoomIdx,userId);
+            return new BaseResponse<>(chatRoomUser);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    // 채팅방에 존재하는 있는 유저모두 출력
+    @GetMapping("/{chatRoom_id}/users")
+    public BaseResponse<List<ChatRoomUser>> getChatRoomUsers(@PathVariable("chatRoom_id") int chatRoomIdx) throws Exception{
+        try {
+            List<ChatRoomUser> chatRoomUsers = chatRoomService.getChatRoomUsers(chatRoomIdx);
+            return new BaseResponse<>(chatRoomUsers);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    // 현재 채팅방안에서 채팅을 보는중
+    @PutMapping("/{chatRoom_id}/user/{user_id}/in")
+    public BaseResponse<ChatRoomUser> inChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){
+        try{
+            ChatRoomUser chatRoomUser = chatRoomService.inChatRoomUser(chatRoomIdx,userId);
+            return new BaseResponse<>(chatRoomUser);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    // 현재 채팅방을 보지 않는 중
+    @PutMapping("/{chatRoom_id}/user/{user_id}/out")
+    public BaseResponse<ChatRoomUser> outChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){
+        try{
+            ChatRoomUser chatRoomUser = chatRoomService.outChatRoomUser(chatRoomIdx,userId);
+            return new BaseResponse<>(chatRoomUser);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    // 채팅방 나가기
+    @DeleteMapping("/{chatRoom_id}/user/{user_id}/leave")
+    public BaseResponse<Integer> leaveChatRoomUser (@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId) throws Exception{
+        try{
+            int chatRoomUser = chatRoomService.leaveChatRoomUser(chatRoomIdx,userId);
+            return new BaseResponse<>(chatRoomUser);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    // 채팅방에 존재하는 한명의 유저 정보
+    @GetMapping("/{chatRoom_id}/user/{user_id}")
+    public BaseResponse<ChatRoomUser> getChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId) throws Exception{
+        try {
+            ChatRoomUser chatRoomUser = chatRoomService.getChatRoomUser(chatRoomIdx,userId);
+            return new BaseResponse<>(chatRoomUser);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }
