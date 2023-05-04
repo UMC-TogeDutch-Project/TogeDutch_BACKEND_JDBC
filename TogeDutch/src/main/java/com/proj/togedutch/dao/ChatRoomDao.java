@@ -104,6 +104,8 @@ public class ChatRoomDao {
 
     public int leaveChatRoomUser(int chatRoomIdx, int userId) {
         String deleteChatRoomUserQuery = "delete from mydb.ChatRoomOfUser where chatRoom_id=? and user_id=?";
+        String deleteApplicationQuery = "DELETE FROM Application WHERE ChatRoom_chatRoom_id = ? and User_user_id=?";
+        this.jdbcTemplate.update(deleteApplicationQuery, chatRoomIdx,userId);
         return this.jdbcTemplate.update(deleteChatRoomUserQuery, chatRoomIdx,userId);
     }
 }
